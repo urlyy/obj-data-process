@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+tmp_video
+index_data
+output
+inputs
+tmp_file
+clipped
+
+qwer.py
+*.html
+*.jpg
+*.png
+*.mp4
+*.wav
+*.ipynb
+*.JPEG
+*.avi
+*.pth
+*.pt
+
+
+# Editor directories and files
+.idea
+__pycache__

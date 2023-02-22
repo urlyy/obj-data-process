@@ -1,0 +1,4 @@
+ceshi.pt 使用aidatatang训练近15万步
+mandarin.pt 基于ceshi.pt 使用SLR68继续训练到23万步 loss值不降 整体表现不如ceshi.pt 等待进一步优化策略中。。。
+我的效果如视频所现
+https://www.bilibili.com/video/BV1uh411B7AD/
