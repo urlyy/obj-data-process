@@ -19,3 +19,8 @@ Real-ESRGAN
 MockingBird(含降噪)
 # 翻译
 googletrans
+
+
+# 安装
+python相关依赖在requirements.txt中
+还要自行安装FFMPEG
