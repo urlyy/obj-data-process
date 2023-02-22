@@ -14,10 +14,12 @@ from towhee.types import VideoFrame
 
 logger = logging.getLogger()
 
+
 def __img2cv2(img: UploadFile) -> np.ndarray:
     file_bytes: bytes = img.file.read()
     img_cv2 = cv2.imdecode(np.array(bytearray(file_bytes), dtype='uint8'), cv2.IMREAD_UNCHANGED)
     return img_cv2
+
 
 def img2byte(image):
     byte_stream = io.BytesIO()
@@ -123,12 +125,10 @@ def __video2frames(video: UploadFile, start_time, sample_type=None, args=None):
 
 
 # 保存为本地文件
-def __save_video2local(dir,video: UploadFile):
+def __save_video2local(dir, video: UploadFile):
     if not os.path.exists(dir):
         os.mkdir(dir)
-    tf = tempfile.NamedTemporaryFile(delete=False,suffix=os.path.splitext(video.filename)[-1], dir=dir)
+    tf = tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(video.filename)[-1], dir=dir)
     tf.write(video.file.read())
     # ff.seek(0)  # 从头读取，和一般文件对象不同，seek方法的执行不能少
     return tf
-
-   

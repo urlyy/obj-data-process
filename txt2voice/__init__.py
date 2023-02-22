@@ -1,7 +1,6 @@
 __all__ = ['app']
 
-
-from fastapi import Body, UploadFile, APIRouter, Form
+from fastapi import UploadFile, APIRouter, Form
 from starlette.responses import FileResponse
 from txt2voice.vocoder.hifigan import inference as gan_vocoder
 from txt2voice.vocoder.wavernn import inference as rnn_vocoder
@@ -12,7 +11,6 @@ import io
 from pathlib import Path
 from scipy.io.wavfile import write
 import re
-import librosa
 import noise_reduce
 
 import os
@@ -25,7 +23,7 @@ encoder.load_model(Path(os.path.join(os.getcwd(), "txt2voice", "encoder", "saved
 gan_vocoder.load_model(
     Path(os.path.join(os.getcwd(), "txt2voice", "vocoder", "saved_models", "pretrained", "g_hifigan.pt")))
 
-dir = os.path.join(os.getcwd(),"txt2voice","tmp_file")
+dir = os.path.join(os.getcwd(), "txt2voice", "tmp_file")
 if not os.path.exists(dir):
     os.mkdir(dir)
 
@@ -61,6 +59,7 @@ def pcm2float(sig, dtype='float32'):
     offset = i.min + abs_max
     return (sig.astype(dtype) - offset) / abs_max
 
+
 # 删除无声音的第一秒TODO
 def remove_first_second(file_path):
     pass
@@ -70,16 +69,17 @@ def remove_first_second(file_path):
     # # 保存输出文件
     # audio.export(file_path, format="mp3")
 
+
 @app.post("/audio/clone", summary="语音克隆")
 def synthesize(file: UploadFile, text: str = Form(None)):
     # TODO Implementation with json to support more platform
     # Load synthesizer
     synt_path = synthesizers[0]
     if synthesizers_cache.get(synt_path) is None:
-            current_synt = Synthesizer(Path(synt_path))
-            synthesizers_cache[synt_path] = current_synt
+        current_synt = Synthesizer(Path(synt_path))
+        synthesizers_cache[synt_path] = current_synt
     else:
-            current_synt = synthesizers_cache[synt_path]
+        current_synt = synthesizers_cache[synt_path]
     print("using synthesizer model: " + str(synt_path))
     # Load input wav
     # if upfile_b64.filename!="":
@@ -99,13 +99,13 @@ def synthesize(file: UploadFile, text: str = Form(None)):
     # Load input text
     texts = text.split("\n")
     # 必须加一段空白音效果才好
-    texts.insert(0," ")
+    texts.insert(0, " ")
     punctuation = '！，。、,'  # punctuate and split/clean text
     processed_texts = []
     for text in texts:
-            for processed_text in re.sub(r'[{}]+'.format(punctuation), '\n', text).split('\n'):
-                    if processed_text:
-                            processed_texts.append(processed_text.strip())
+        for processed_text in re.sub(r'[{}]+'.format(punctuation), '\n', text).split('\n'):
+            if processed_text:
+                processed_texts.append(processed_text.strip())
     texts = processed_texts
 
     # synthesize and vocode
@@ -121,7 +121,7 @@ def synthesize(file: UploadFile, text: str = Form(None)):
     # 降噪
     # new_out = io.BytesIO()
     # write(new_out, sample_rate, wav)
-    file_path = os.path.join(dir,"audio_file_no_noise.wav")
+    file_path = os.path.join(dir, "audio_file_no_noise.wav")
     if os.path.exists(file_path):
         os.remove(file_path)
     with open(file_path, 'wb') as f:
