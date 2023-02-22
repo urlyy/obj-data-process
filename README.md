@@ -24,3 +24,4 @@ googletrans
 # 安装
 python相关依赖在requirements.txt中
 还要自行安装FFMPEG
+注意根目录下两个app文件都要启动，因为关键帧服务和部分服务冲突，只好拆分服务
